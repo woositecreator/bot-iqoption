@@ -1,6 +1,6 @@
 const getExpiration = require("../getexpiration")
 
-export default function() {
+module.exports = function() {
 	return new Promise((resolve, reject) => {
 		const {
 			active,

@@ -1,1 +1,1 @@
-export default false
+module.exports = false

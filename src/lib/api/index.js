@@ -21,4 +21,4 @@ API.prototype.actives = require("./storages/actives")
 API.prototype.setBalance = require("./storages/setbalance")
 API.prototype.serverTimestamp = require("./storages/servertimestamp")
 
-export default API
+module.exports = API

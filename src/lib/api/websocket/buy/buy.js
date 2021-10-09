@@ -33,4 +33,4 @@ function Buy(API, options) {
 
 Buy.prototype.close = require("./close")
 
-export default Buy
+module.exports = Buy

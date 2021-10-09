@@ -1,3 +1,3 @@
-export default function(name, callback) {
+module.exports = function(name, callback) {
 	this.emitter.on(name, callback)
 }

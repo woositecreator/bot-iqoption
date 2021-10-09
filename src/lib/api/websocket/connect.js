@@ -1,4 +1,4 @@
-export default function() {
+module.exports = function() {
 	return new Promise((resolve, reject) => {
 		const id = this.WebSocket.send("ssid", this.ssid)
 		

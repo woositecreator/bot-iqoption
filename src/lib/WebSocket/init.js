@@ -1,7 +1,7 @@
 // const WebSocket = require("ws")
 const Settings = require("../settings")
 
-export default function() {
+module.exports = function() {
 	const {
 		protocol,
 		host,

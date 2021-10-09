@@ -1,4 +1,4 @@
-export default function(type) {
+module.exports = function(type) {
 	return new Promise((resolve, reject) => {
 		if (["PRACTICE", "REAL"].indexOf(type) == -1)
 			return reject("Ativo inválido.")

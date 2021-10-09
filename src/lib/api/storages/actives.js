@@ -1,4 +1,4 @@
-export default {
+module.exports = {
 	"EURUSD": 1,
 	"EURGBP": 2,
 	"GBPJPY": 3,

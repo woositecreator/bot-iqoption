@@ -1,6 +1,6 @@
 const Settings = require("../../settings")
 
-export default async function() {
+module.exports = async function() {
 	const {
 		isSuccessful,
 		message,

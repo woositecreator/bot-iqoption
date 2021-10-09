@@ -1,5 +1,5 @@
 const Buy = require("./buy")
 
-export default function(options) {
+module.exports = function(options) {
 	return new Buy(this, options)
 }

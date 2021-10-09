@@ -1,4 +1,4 @@
-export default function(type) {
+module.exports = function(type) {
 	if (["PRACTICE", "REAL"].indexOf(type) == -1)
 		throw new Error("Balanço inválido.")
 	

@@ -1,4 +1,4 @@
-export default function(timestamp, duration, delta) {
+module.exports = function(timestamp, duration, delta) {
 	let date = new Date()
 
 	if (duration == 1) {

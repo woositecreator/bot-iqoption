@@ -8,4 +8,4 @@ WebSocket.prototype.init = require("./init")
 WebSocket.prototype.send = require("./send")
 WebSocket.prototype.getMessage = require("./getmessage")
 
-export default WebSocket
+module.exports = WebSocket

@@ -1,6 +1,6 @@
 const md5 = require("md5")
 
-export default function(name, msg) {
+module.exports = function(name, msg) {
 	const id = md5(Math.random())
 
 	const message = {

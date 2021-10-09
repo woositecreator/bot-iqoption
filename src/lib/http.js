@@ -1,6 +1,6 @@
 const request = require("request")
 
-export default function(host, endpoint, method, body, headers) {
+module.exports = function(host, endpoint, method, body, headers) {
 	return new Promise(function(resolve, reject) {
 		request({
 			url: "http://" + host + "/" + endpoint,

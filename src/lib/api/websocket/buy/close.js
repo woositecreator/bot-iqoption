@@ -1,4 +1,4 @@
-export default function() {
+module.exports = function() {
 	return new Promise(resolve => {
 		const callback = message => {
 			if (message.msg.status == "closed" && ((this.options.type == "BINARY" && message.msg.external_id == this.quote.id) || (this.options.type == "DIGITAL" && message.msg.raw_event.order_ids.indexOf(this.quote.id) != -1))) {

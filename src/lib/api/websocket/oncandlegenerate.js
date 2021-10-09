@@ -1,4 +1,4 @@
-export default function(active, callback) {
+module.exports = function(active, callback) {
 	return new Promise((resolve, reject) => {
 		if (!(active in this.actives))
 			return reject("Ativo inválido.")

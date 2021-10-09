@@ -1,11 +1,11 @@
 import React from 'react';
 
 import { RouteComponentProps } from 'react-router-dom';
-import storage from '../../utils/storage';
+import storage from '../../utils/storage'
 
 import schedule from 'node-schedule';
 
-import IQOption from '../../lib';
+import IQOption from 'iqoptionzzz';
 import operate from '../../utils/operate'
 
 import axios from 'axios';
@@ -14,6 +14,7 @@ import { toast } from 'react-toastify';
 import { Div, DivChange, DivConfig, DivStarted, StartBot } from './styled';
 
 import { useSelector } from 'react-redux';
+
 
 export default function LoginIQ({ history }:{ history: RouteComponentProps['history'] }) {
     const [ stopWin, setStopWin ] = React.useState(0);
@@ -93,7 +94,7 @@ export default function LoginIQ({ history }:{ history: RouteComponentProps['hist
         formData.append('file', file);
 
        try {
-           const { data }: { data: any } = await axios.post('http://localhost:3001/sinais', formData, {
+           const { data }: { data: any } = await axios.post(`http://${process.env.REACT_APP_PUBLIC_URL}/sinais`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }

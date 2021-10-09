@@ -7,7 +7,7 @@ import Main from '../pages/Main';
 export default function Routes() {
     return (
         <Switch>
-            <Route exact path="/login/iq" component={LoginIQ} />
+            <Route exact path="/" component={LoginIQ} />
             <Route exact path="/main" component={Main} />
         </Switch>
     );

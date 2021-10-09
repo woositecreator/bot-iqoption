@@ -29,9 +29,8 @@ export default function LoginIQ({ history }:{ history: RouteComponentProps['hist
             button.current.disabled = false;
             return;
         }
-
         try {
-            const { data: { ssid } }: { data: { ssid: string; } } = await toast.promise(axios.post('http://localhost:3001/api/v2/login', {
+            const { data: { ssid } }: { data: { ssid: string; } } = await toast.promise(axios.post(`http://${process.env.REACT_APP_PUBLIC_URL}/api/v2/login`, {
                 identifier: email,
                 password
             }), {

@@ -1,8 +1,5 @@
 import storage from './storage';
 
-
-const martinGales = storage.getStorage().martinGales;
-
 const type = "BINARY" // BINARY OR DIGITAL
 
 let finishedGale = false;
@@ -10,6 +7,8 @@ let winned = false;
 let forcedStopMartinGale = false;
 
 export default async function operate(API, active, action, duration) {	
+		const martinGales = storage.getStorage().martinGales;
+		console.log(martinGales);
 		console.log("===============================")
 
 		console.log(`ULTIMAS VELAS: ${action}`)
@@ -25,7 +24,7 @@ export default async function operate(API, active, action, duration) {
 
 				if(Number(martinGale) + lossValue >= stopLoss) {
 					forcedStopMartinGale = true;
-					storage.stopLoss();
+					storage.stopLossStoped();
 					return;
 				};
 
@@ -55,7 +54,7 @@ export default async function operate(API, active, action, duration) {
 				if(!order.quote.win) {
 					storage.addLossValue(Number(martinGale));
 					if(lossValue >= stopLoss) {
-						storage.stopLoss();
+						storage.stopLossStoped();
 						forcedStopMartinGale = true;
 					}
 				};

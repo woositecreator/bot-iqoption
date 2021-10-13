@@ -1,6 +1,15 @@
 import styled from 'styled-components';
 
 export const Banner = styled.div`
+    @media screen and (max-height: 550px) {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 220px;
+        @media screen and (max-height: 400px) {
+            display: none;
+        }
+    }
     img {
         display: block;
         margin: 0 auto;

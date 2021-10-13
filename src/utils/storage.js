@@ -1,66 +1,61 @@
-// CONFIGS
-
-let martinGales = [
-	80, 160, 360
-];
-
-let stopWin = 1222260;
-let stopLoss = 122260;
-
-// 
-
-
-let lossCount = 0;
-let winCount = 0;
-
-let winsValue = 0;
-let losssValue = 0;
-
 
 class Storage {
+    constructor() {
+        this.martinGales = [];
+        
+        this.stopWin = 1222260;
+        this.stopLosss = 122260;
+        
+        
+        this.lossCount = 0;
+        this.winCount = 0;
+        
+        this.winsValue = 0;
+        this.losssValue = 0;
+    }
     getStorage() {
         return {
-            winsValue,
-            losssValue,
-            lossCount,
-            winCount,
-            martinGales,
-            stopWin,
-            stopLoss
+            winsValue: this.winsValue,
+            losssValue: this.losssValue,
+            lossCount: this.lossCount,
+            winCount: this.winCount,
+            martinGales: this.martinGales,
+            stopWin: this.stopWin,
+            stopLoss: this.stopLoss
         }
     }
 
     addWinCount(value) {
-        winCount++;
+        this.winCount++;
     }
 
     addLossCount(value) {
-        lossCount++;
+        this.lossCount++;
     }
 
     addWinValue(value) {
         this.addWinCount();
-        winsValue += value;
+        this.winsValue += value;
     }
 
     addLossValue(value) {
         this.addLossCount();
-        losssValue += value;
+        this.losssValue += value;
     }
 
     setMartinGales(nmartinGales) {
-        martinGales = [ ...nmartinGales ];
+        this.martinGales = [ ...nmartinGales ];
     }
 
     setStopWin(value) {
-        stopWin = value;
+        this.stopWin = value;
     }
 
     setStopLoss(value) {
-        stopLoss = value;
+        this.stopLoss = value;
     }
 
-    stopLoss() {
+    stopLossStoped() {
         console.log('STOPLOSS');
         //operations.resetOperations();
     }

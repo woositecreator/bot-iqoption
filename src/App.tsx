@@ -15,7 +15,7 @@ function App() {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-      <BrowserRouter basename={`http://${process.env.REACT_APP_PUBLIC_URL}`} >
+      <BrowserRouter>
 	  <GlobalStyle />
     <ToastContainer />
 		<Routes />

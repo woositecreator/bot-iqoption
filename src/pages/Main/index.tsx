@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { RouteComponentProps } from 'react-router-dom';
-import storage from '../../utils/storage'
+import storage from '../../utils/storage';
 
 import schedule from 'node-schedule';
 
@@ -13,7 +13,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { Div, DivChange, DivConfig, DivStarted, StartBot } from './styled';
 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 
 export default function LoginIQ({ history }:{ history: RouteComponentProps['history'] }) {
@@ -23,7 +23,7 @@ export default function LoginIQ({ history }:{ history: RouteComponentProps['hist
     const [ file, setFile ] = React.useState<File>();
     const [ balance, setBalance ] = React.useState<number | boolean>(false);
     const [ buttonName, setButtonName ] = React.useState('Configurar');
-    const [ martinGales, setMartinGales ] = React.useState<number[]>([]);
+    const [ martinGales, setMartinGales ] = React.useState<number[]>(0);
 
     const [ oldTrade, setOldTrade ] = React.useState({
         time: '',
@@ -53,7 +53,8 @@ export default function LoginIQ({ history }:{ history: RouteComponentProps['hist
             ssid: string;
         }
     }) => state.iqoption);
-    
+
+    const dispatch = useDispatch();
     async function handleClick(e: React.ChangeEvent<any>): Promise<unknown> {
         if(buttonStart.current.innerText === 'Stop') {
             divStarted.current.style.display = 'none';
@@ -62,7 +63,21 @@ export default function LoginIQ({ history }:{ history: RouteComponentProps['hist
             div.current.style.display = 'block';
             divChange.current.style.display = 'block';
 
+            Object.keys(schedule.scheduledJobs).forEach((key) => {
+                schedule.scheduledJobs[key].cancel();
+            })
 
+            setOldTrade({
+                time: '',
+                active: '',
+                direction: '',
+            });
+
+            setNextTrade({
+                time: '',
+                active: '',
+                direction: '',
+            });
             return;
         }
         
@@ -89,12 +104,12 @@ export default function LoginIQ({ history }:{ history: RouteComponentProps['hist
         storage.setStopLoss(stopLoss);
         storage.setStopWin(stopWin);
         storage.setMartinGales(martinGales);
-
+        
         const formData = new FormData();
         formData.append('file', file);
 
        try {
-           const { data }: { data: any } = await axios.post(`http://${process.env.REACT_APP_PUBLIC_URL}/sinais`, formData, {
+           const { data }: { data: any } = await axios.post(`http://${process.env.REACT_APP_HOST_APP}/api/v2/sinais`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
@@ -114,14 +129,14 @@ export default function LoginIQ({ history }:{ history: RouteComponentProps['hist
             });
             console.log('IQOPTION CONNECTED');
 
-            setOldTrade({
+            setNextTrade({
                 active: data[0].active,
                 direction: data[0].direction,
                 time: `${data[0].time.hour}:${data[0].time.minutes}`
             });
 
             data.forEach((value, index, array) => {
-                schedule.scheduleJob({ hour: value.time.hour, minute: value.time.minutes}, () => {
+                schedule.scheduleJob({ hour: value.time.hour, minute: delay ? value.time.minutes - delay < 0 ? 0 : value.time.minutes - delay : value.time.minutes}, () => {
                     try {
                         let indexOld = index - 1;
                 if(index === 0) indexOld = 0;

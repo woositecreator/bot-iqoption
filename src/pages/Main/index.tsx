@@ -23,7 +23,8 @@ export default function LoginIQ({ history }:{ history: RouteComponentProps['hist
     const [ file, setFile ] = React.useState<File>();
     const [ balance, setBalance ] = React.useState<number | boolean>(false);
     const [ buttonName, setButtonName ] = React.useState('Configurar');
-    const [ martinGales, setMartinGales ] = React.useState<number[]>(0);
+    const [ entrada, setEntrada ] = React.useState(0);
+    const [ martinGales, setMartinGales ] = React.useState(0);
 
     const [ oldTrade, setOldTrade ] = React.useState({
         time: '',
@@ -85,7 +86,7 @@ export default function LoginIQ({ history }:{ history: RouteComponentProps['hist
         if(!stopWin) errors.push('Preencha stopWin');
         if(!stopLoss) errors.push('Preencha stopLoss');
         if(!file) errors.push('Coloque uma lista');
-        if(martinGales.length === 0) errors.push('Preencha os martingales');
+        if(!entrada) errors.push('Coloque uma entrada');
 
         if(errors.length > 0) return errors.forEach((value) => {
             toast.error(value);
@@ -101,15 +102,23 @@ export default function LoginIQ({ history }:{ history: RouteComponentProps['hist
         } 
 
 
+        const gales = [];
+        gales.push(Number(entrada));
+
+        for(let i = 0; martinGales > i; i++) {
+            gales.push(gales[gales.length - 1] * 2);
+        }
+
         storage.setStopLoss(stopLoss);
         storage.setStopWin(stopWin);
-        storage.setMartinGales(martinGales);
+        storage.setMartinGales(gales);
         
         const formData = new FormData();
         formData.append('file', file);
 
        try {
-           const { data }: { data: any } = await axios.post(`http://${process.env.REACT_APP_HOST_APP}/api/v2/sinais`, formData, {
+           console.log(process.env.REACT_APP_PROTOCOL);
+           const { data }: { data: any } = await axios.post(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_HOST_APP}/api/v2/sinais`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
@@ -136,7 +145,11 @@ export default function LoginIQ({ history }:{ history: RouteComponentProps['hist
             });
 
             data.forEach((value, index, array) => {
-                schedule.scheduleJob({ hour: value.time.hour, minute: delay ? value.time.minutes - delay < 0 ? 0 : value.time.minutes - delay : value.time.minutes}, () => {
+                let minutes = delay ? String(value.time.minutes - 1) : String(value.time.minutes);
+            
+                let obj = delay !== 0 ? { hour: value.time.hour, minute: minutes, second: String(60 - delay - 1) } : { hour: value.time.hour, minute: minutes };
+
+                schedule.scheduleJob(obj, () => {
                     try {
                         let indexOld = index - 1;
                 if(index === 0) indexOld = 0;
@@ -162,7 +175,6 @@ export default function LoginIQ({ history }:{ history: RouteComponentProps['hist
                     }
                 });
             });
-            
         } catch(e) {
             console.log(e);
             toast.error('Verifique as configuracoes');
@@ -200,7 +212,7 @@ export default function LoginIQ({ history }:{ history: RouteComponentProps['hist
                 };
                 
                 if(myMessage.name === 'profile') {
-                    setBalance(myMessage.msg.balances[1].amount)
+                    setBalance(myMessage.msg.balances[1]?.amount)
                     ws.close();
                 }
             }
@@ -249,18 +261,16 @@ export default function LoginIQ({ history }:{ history: RouteComponentProps['hist
                 if(!value) return;
                 setStopLoss(value);
             }}/></span></h1>
-            <h1>MartinGale <span><input ref={martin} type="number" /> <button onClick={() => {
-                const value = martin.current.value as unknown as number;
-                if(isNaN(value)) return;
-                const splited = (value as unknown as string).split(' ');
-                if(splited[0] === '') return;
-                setMartinGales((state) => {
-                    const newState = [ ...state ];
-                    newState.push(Number(value));
-                    martin.current.value = '';
-                    return newState;
-                });
-            }}>Add</button></span></h1>
+             <h1>Entrada <span><input type="number" onChange={(e) => {
+                const value = e.target.value as unknown as number;
+                if(!value) return;
+                setEntrada(value);
+            }}/></span></h1>
+            <h1>MartinGales <span><input type="number" onChange={(e) => {
+                const value = e.target.value as unknown as number;
+                if(!value) return;
+                setMartinGales(value);
+            }}/></span></h1>
             <h1>Listas <span><input type="file" accept="text/plain" onChange={(e) => {
                 const file = e.target.files[0];
                 setFile(file);
@@ -272,9 +282,8 @@ export default function LoginIQ({ history }:{ history: RouteComponentProps['hist
             <h1>Delay <span>{ delay }</span></h1>
             <h1>Stop Win <span>{ stopWin }</span></h1>
             <h1>Stop Loss <span>{ stopLoss }</span></h1>
-            <h1>MartinGales <span>{ martinGales.map((value) => {
-                return `${value}\n`;
-            }) }</span></h1>
+            <h1>Entrada <span>{ entrada }</span></h1>
+            <h1>MartinGales <span>{ martinGales }</span></h1>
         </Div>
 
         <StartBot>

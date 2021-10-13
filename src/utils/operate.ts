@@ -8,7 +8,6 @@ let forcedStopMartinGale = false;
 
 export default async function operate(API, active, action, duration) {	
 		const martinGales = storage.getStorage().martinGales;
-		console.log(martinGales);
 		console.log("===============================")
 
 		console.log(`ULTIMAS VELAS: ${action}`)
@@ -47,9 +46,6 @@ export default async function operate(API, active, action, duration) {
 					duration: duration //1 e 1 minutos
 				})
 				await order.close()
-				//console.log(await API.getBalance('PRACTICE').amount);
-				console.log('ordem', order.quote.win);
-
 
 				if(!order.quote.win) {
 					storage.addLossValue(Number(martinGale));

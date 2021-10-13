@@ -1,3 +1,4 @@
+import schedule from 'node-schedule';
 
 class Storage {
     constructor() {
@@ -57,12 +58,16 @@ class Storage {
 
     stopLossStoped() {
         console.log('STOPLOSS');
-        //operations.resetOperations();
+        Object.keys(schedule.scheduledJobs).forEach((key) => {
+            schedule.scheduledJobs[key].cancel();
+        })
     }
 
     stopGain() {
         console.log('STOPGAIN');
-        //operations.resetOperations();
+        Object.keys(schedule.scheduledJobs).forEach((key) => {
+            schedule.scheduledJobs[key].cancel();
+        })
     }
 }
 
